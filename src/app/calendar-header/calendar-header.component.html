@@ -1,0 +1,11 @@
+<button (click)="changeViewDate('previous')">Zurück</button>
+<button (click)="changeViewDate('today')">Heute</button>
+<button (click)="changeViewDate('next')">Nächster</button>
+
+{{ headlineDate }}
+
+<button (click)="changeCalendarView(CalendarView.Month)">Monat</button>
+<button (click)="changeCalendarView(CalendarView.Week)">Wooche</button>
+<button (click)="changeCalendarView(CalendarView.Day)">Tag</button>
+
+<br /><br />
