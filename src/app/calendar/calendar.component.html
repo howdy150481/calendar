@@ -13,6 +13,9 @@
     [locale]="locale"
     [weekStartsOn]="weekStartsOn"
     [weekendDays]="weekendDays"
+    (dayClicked)="onDayClicked($event)"
+    (eventClicked)="onEventClicked($event)"
+    (eventTimesChanged)="onEventTimesChanged($event)"
   ></mwl-calendar-month-view>
   <mwl-calendar-week-view
     *ngSwitchCase="'week'"
@@ -21,11 +24,21 @@
     [locale]="locale"
     [weekStartsOn]="weekStartsOn"
     [weekendDays]="weekendDays"
+    [dayStartHour]="6"
+    [dayEndHour]="18"
+    (hourSegmentClicked)="onHourSegmentClicked($event)"
+    (eventClicked)="onEventClicked($event)"
+    (eventTimesChanged)="onEventTimesChanged($event)"
   ></mwl-calendar-week-view>
   <mwl-calendar-day-view
     *ngSwitchCase="'day'"
     [viewDate]="viewDate"
     [events]="events"
     [locale]="locale"
+    [dayStartHour]="6"
+    [dayEndHour]="18"
+    (hourSegmentClicked)="onHourSegmentClicked($event)"
+    (eventClicked)="onEventClicked($event)"
+    (eventTimesChanged)="onEventTimesChanged($event)"
   ></mwl-calendar-day-view>
 </div>
