@@ -1,9 +1,15 @@
-<button (click)="changeViewDate('previous')">Zurück</button>
-<button (click)="changeViewDate('today')">Heute</button>
-<button (click)="changeViewDate('next')">Nächster</button>
-
-{{ headlineDate }}
-
-<button (click)="changeCalendarView(CalendarView.Month)">Monat</button>
-<button (click)="changeCalendarView(CalendarView.Week)">Wooche</button>
-<button (click)="changeCalendarView(CalendarView.Day)">Tag</button>
+<div class="flex items-center justify-center">
+  <div class="w-1/3 p-4">
+    <button mat-raised-button color="primary" class="mr-2" (click)="changeViewDate('previous')">Zurück</button>
+    <button mat-raised-button color="primary" class="mr-2" (click)="changeViewDate('today')">Heute</button>
+    <button mat-raised-button color="primary" (click)="changeViewDate('next')">Nächster</button>
+  </div>
+  <div class="w-1/3 text-center">
+    <p class="text-2xl">{{ headlineDate }}</p>
+  </div>
+  <div class="w-1/3 text-right p-4">
+    <button mat-raised-button color="{{ view == CalendarView.Month ? 'accent' : 'primary' }}" class="mr-2" (click)="changeCalendarView(CalendarView.Month)">Monat</button>
+    <button mat-raised-button color="{{ view == CalendarView.Week ? 'accent' : 'primary' }}" class="mr-2" (click)="changeCalendarView(CalendarView.Week)">Wooche</button>
+    <button mat-raised-button color="{{ view == CalendarView.Day ? 'accent' : 'primary' }}" (click)="changeCalendarView(CalendarView.Day)">Tag</button>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<h2 mat-dialog-title>Eintrag bearbeiten</h2>
+<mat-dialog-content class="mat-typography">
+  <mat-form-field class="m-2">
+    <mat-label>Titel</mat-label>
+    <input matInput [(ngModel)]="title" />
+  </mat-form-field>
+  <mat-form-field class="m-2">
+    <mat-label>Details</mat-label>
+    <textarea matInput rows="10" [(ngModel)]="details"></textarea>
+  </mat-form-field>
+  <div class="flex flex-row">
+    <div class="basis-1/2">
+      <div class="flex flex-row">
+        <div class="basis-1/2">
+          <mat-form-field>
+            <mat-label>Start Datum</mat-label>
+            <input matInput [(ngModel)]="dateStart" />
+          </mat-form-field>
+        </div>
+        <div class="basis-1/2">
+          <mat-form-field>
+            <mat-label>Start Uhrzeit</mat-label>
+            <input matInput [(ngModel)]="timeStart" />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div class="basis-1/2">
+      <div class="flex flex-row">
+        <div class="basis-1/2">
+          <mat-form-field>
+            <mat-label>Ende Datum</mat-label>
+            <input matInput [(ngModel)]="dateEnd" />
+          </mat-form-field>
+        </div>
+        <div class="basis-1/2">
+          <mat-form-field>
+            <mat-label>Ende Uhrzeit</mat-label>
+            <input matInput [(ngModel)]="timeEnd" />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="warn" *ngIf="existingEvent" (click)="delete()">Löschen</button>
+  <button mat-raised-button color="primary" (click)="closeDialog()">Abbrechen</button>
+  <button mat-raised-button color="primary" (click)="save()">Speichern</button>
+</mat-dialog-actions>

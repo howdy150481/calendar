@@ -2,8 +2,11 @@ import {Component} from '@angular/core';
 import {CalendarDateFormatter, CalendarEvent, CalendarView, DAYS_OF_WEEK} from "angular-calendar";
 import {CustomDateFormatter} from "./custom-date-formatter.provider";
 import {colors} from "../lib/colors";
-
+import {EditEntryComponent} from "../edit-entry/edit-entry.component";
+import {MatDialog} from "@angular/material/dialog";
+import {Subject} from "rxjs";
 const moment = require("moment");
+const uuid = require('uuid');
 
 moment.updateLocale('de', {
   week: {
@@ -24,44 +27,37 @@ moment.updateLocale('de', {
   ]
 })
 export class CalendarComponent {
-  view: CalendarView = CalendarView.Month;
+  constructor(public dialog: MatDialog) {}
+
+  refresh = new Subject<void>();
+
+  view: CalendarView = CalendarView.Week;
   viewDate = new Date();
   locale: string = 'de';
   weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
   weekendDays: number[] = [DAYS_OF_WEEK.FRIDAY, DAYS_OF_WEEK.SATURDAY];
 
-  // actions: CalendarEventAction[] = [
-  //   {
-  //     label: '<i class="fas fa-fw fa-pencil-alt"></i>',
-  //     a11yLabel: 'Edit',
-  //     onClick: ({ event }: { event: CalendarEvent }): void => {
-  //       this.handleEvent('Edited', event);
-  //     },
-  //   },
-  //   {
-  //     label: '<i class="fas fa-fw fa-trash-alt"></i>',
-  //     a11yLabel: 'Delete',
-  //     onClick: ({ event }: { event: CalendarEvent }): void => {
-  //       this.events = this.events.filter((iEvent) => iEvent !== event);
-  //       this.handleEvent('Deleted', event);
-  //     },
-  //   },
-  // ];
-
   events: CalendarEvent[] = [
     {
+      title: 'Feiertag Test',
+      id: uuid.v4(),
       start: new Date('2023-01-18'),
       end: new Date('2023-01-18'),
-      title: 'Feiertag Test',
       color: { ...colors.red },
+      meta: {
+        details: 'Moooh'
+      },
       allDay: true,
     },
     {
       title: 'Event 1',
-      start: moment(new Date()).add(-2, 'hours').toDate(),
-      end: moment(new Date()).add(4, 'hours').toDate(),
+      id: uuid.v4(),
+      start: new Date('2023-01-18T10:00:00'),
+      end: new Date('2023-01-18T13:00:00'),
       color: { ...colors.blue },
-      // actions: this.actions,
+      meta: {
+        details: 'Miau'
+      },
       resizable: {
         beforeStart: true,
         afterEnd: true,
@@ -70,10 +66,13 @@ export class CalendarComponent {
     },
     {
       title: 'Event 2',
+      id: uuid.v4(),
       start: moment(new Date()).add(-1, 'hours').toDate(),
       end: moment(new Date()).add(4, 'hours').toDate(),
       color: { ...colors.yellow },
-      // actions: this.actions,
+      meta: {
+        details: 'Wuff'
+      },
       resizable: {
         beforeStart: true,
         afterEnd: true,
@@ -96,13 +95,35 @@ export class CalendarComponent {
   }
 
   onHourSegmentClicked(event: any): void {
-    console.log('onHourSegmentClicked');
-    console.log(event);
+    const dialogRef = this.dialog.open(EditEntryComponent, {
+      data: event
+    });
+    dialogRef.componentInstance.saveEvent.subscribe((event: any) => {
+      this.events.push(event);
+      this.refresh.next();
+    });
   }
 
   onEventClicked(event: any): void {
-    console.log('onEventClicked');
-    console.log(event);
+    const dialogRef = this.dialog.open(EditEntryComponent, {
+      data: event
+    });
+    dialogRef.componentInstance.saveEvent.subscribe((event: any) => {
+      for (let key in this.events) {
+        if (this.events[key].id === event.id) {
+          this.events[key] = event
+        }
+      }
+      this.refresh.next();
+    });
+    dialogRef.componentInstance.deleteEvent.subscribe((id: string) => {
+      for (let key in this.events) {
+        if (this.events[key].id === id) {
+          this.events.splice(Number(key), 1);
+        }
+      }
+      this.refresh.next();
+    });
   }
 
   onEventTimesChanged(event: any): void {
