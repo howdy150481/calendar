@@ -127,7 +127,12 @@ export class CalendarComponent {
   }
 
   onEventTimesChanged(event: any): void {
-    console.log('onEventTimesChanged');
-    console.log(event);
+    for (let key in this.events) {
+      if (this.events[key].id === event.event.id) {
+        this.events[key].start = event.newStart
+        this.events[key].end = event.newEnd
+      }
+    }
+    this.refresh.next();
   }
 }
