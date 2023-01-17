@@ -4,6 +4,7 @@ import { ConfirmDialogComponent } from '../helper/confirm-dialog/confirm-dialog.
 import {colors} from "../lib/colors";
 const moment = require("moment/moment");
 const uuid = require('uuid');
+const Cleave = require('cleave.js');
 
 @Component({
   selector: 'app-edit-entry',
@@ -48,6 +49,7 @@ export class EditEntryComponent {
       this.timeEnd = moment(data.date.toISOString()).format("HH:mm");
     }
   }
+
   save(): void {
     const dateStart = moment(this.dateStart, "DD.MM.YYYY").format("YYYY-MM-DD");
     const dateEnd = moment(this.dateEnd, "DD.MM.YYYY").format("YYYY-MM-DD");
