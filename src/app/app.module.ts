@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 import { EditEntryComponent } from './edit-entry/edit-entry.component';
 import { ConfirmDialogComponent } from './helper/confirm-dialog/confirm-dialog.component';
@@ -41,7 +42,8 @@ export function momentAdapterFactory() {
     BrowserAnimationsModule,
     MatButtonModule,
     MatDialogModule,
-    MatInputModule
+    MatInputModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

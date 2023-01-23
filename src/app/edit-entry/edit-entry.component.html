@@ -1,45 +1,50 @@
 <h2 mat-dialog-title>Eintrag bearbeiten</h2>
 <mat-dialog-content class="mat-typography">
-  <mat-form-field class="m-2">
-    <mat-label>Titel</mat-label>
-    <input matInput [(ngModel)]="title" />
-  </mat-form-field>
-  <mat-form-field class="m-2">
+  <div class="flex flex-row">
+    <div class="basis-3/4 pr-2">
+      <mat-form-field>
+        <mat-label>Titel</mat-label>
+        <input matInput [(ngModel)]="title" />
+      </mat-form-field>
+    </div>
+    <div class="basis-1/4">
+      <mat-form-field>
+        <mat-label>Ganztägig</mat-label>
+        <mat-select [(value)]="allDay">
+          <mat-option [value]="true">Ja</mat-option>
+          <mat-option [value]="false">Nein</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <mat-form-field>
     <mat-label>Details</mat-label>
     <textarea matInput rows="10" [(ngModel)]="details"></textarea>
   </mat-form-field>
   <div class="flex flex-row">
-    <div class="basis-1/2">
-      <div class="flex flex-row">
-        <div class="basis-1/2">
-          <mat-form-field>
-            <mat-label>Start Datum</mat-label>
-            <input id="date-start" matInput [(ngModel)]="dateStart" />
-          </mat-form-field>
-        </div>
-        <div class="basis-1/2">
-          <mat-form-field>
-            <mat-label>Start Uhrzeit</mat-label>
-            <input id="time-start" matInput [(ngModel)]="timeStart" />
-          </mat-form-field>
-        </div>
-      </div>
+    <div class="basis-2/4 pr-2">
+      <mat-form-field>
+        <mat-label>Start Datum</mat-label>
+        <input id="date-start" matInput [(ngModel)]="dateStart" />
+      </mat-form-field>
     </div>
-    <div class="basis-1/2">
-      <div class="flex flex-row">
-        <div class="basis-1/2">
-          <mat-form-field>
-            <mat-label>Ende Datum</mat-label>
-            <input id="date-end" matInput [(ngModel)]="dateEnd" />
-          </mat-form-field>
-        </div>
-        <div class="basis-1/2">
-          <mat-form-field>
-            <mat-label>Ende Uhrzeit</mat-label>
-            <input id="time-end" matInput [(ngModel)]="timeEnd" />
-          </mat-form-field>
-        </div>
-      </div>
+    <div class="basis-2/4 pr-2 {{ allDay ? 'hidden' : 'block' }}">
+      <mat-form-field>
+        <mat-label>Start Uhrzeit</mat-label>
+        <input id="time-start" matInput [(ngModel)]="timeStart" />
+      </mat-form-field>
+    </div>
+    <div class="basis-2/4 pr-2">
+      <mat-form-field>
+        <mat-label>Ende Datum</mat-label>
+        <input id="date-end" matInput [(ngModel)]="dateEnd" />
+      </mat-form-field>
+    </div>
+    <div class="basis-2/4 {{ allDay ? 'hidden' : 'block' }}">
+      <mat-form-field>
+        <mat-label>Ende Uhrzeit</mat-label>
+        <input id="time-end" matInput [(ngModel)]="timeEnd" />
+      </mat-form-field>
     </div>
   </div>
   <div class="flex flex-row">
@@ -51,7 +56,4 @@
       <button mat-raised-button color="primary" (click)="save()">Speichern</button>
     </div>
   </div>
-
-
-
 </mat-dialog-content>

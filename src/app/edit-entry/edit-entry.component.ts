@@ -19,6 +19,7 @@ export class EditEntryComponent {
   existingEvent: boolean = false;
 
   id: string = '';
+  allDay: boolean = false;
   title: string = '';
   details: string = '';
   dateStart: string = '';
@@ -34,6 +35,7 @@ export class EditEntryComponent {
     if(data.event !== undefined) {
       this.existingEvent = true;
       this.id = data.event.id;
+      this.allDay = data.event.allDay ?? false;
 
       this.dateStart = moment(data.event.start.toISOString()).format("DD.MM.YYYY");
       this.timeStart = moment(data.event.start.toISOString()).format("HH:mm");
@@ -53,6 +55,8 @@ export class EditEntryComponent {
   }
 
   ngOnInit() {
+    this.editEntryDialogRef.updateSize('80%');
+
     formatDateField('date-start');
     formatDateField('date-end');
     formatTimeField('time-start');
@@ -77,6 +81,7 @@ export class EditEntryComponent {
           afterEnd: true,
       },
       draggable: true,
+      allDay: this.allDay
     };
 
     this.saveEvent.emit(event);
