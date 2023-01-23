@@ -1,10 +1,11 @@
 import {Component, EventEmitter, Inject, Output} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import { ConfirmDialogComponent } from '../helper/confirm-dialog/confirm-dialog.component';
-import {colors} from "../lib/colors";
-const moment = require("moment/moment");
-const uuid = require('uuid');
-const Cleave = require('cleave.js');
+import moment from "moment";
+import { v4 as uuid } from "uuid";
+
+import { colors } from "../lib/colors";
+import {formatDateField, formatTimeField } from "../lib/cleave";
 
 @Component({
   selector: 'app-edit-entry',
@@ -17,7 +18,7 @@ export class EditEntryComponent {
 
   existingEvent: boolean = false;
 
-  id: number = 0;
+  id: string = '';
   title: string = '';
   details: string = '';
   dateStart: string = '';
@@ -42,13 +43,20 @@ export class EditEntryComponent {
       this.title = data.event.title;
       this.details = data.event.meta.details
     } else {
-      this.id = uuid.v4()
+      this.id = uuid()
 
       this.dateStart = moment(data.date.toISOString()).format("DD.MM.YYYY");
       this.timeStart = moment(data.date.toISOString()).format("HH:mm");
       this.dateEnd = moment(data.date.toISOString()).format("DD.MM.YYYY");
       this.timeEnd = moment(data.date.toISOString()).format("HH:mm");
     }
+  }
+
+  ngOnInit() {
+    formatDateField('date-start');
+    formatDateField('date-end');
+    formatTimeField('time-start');
+    formatTimeField('time-end');
   }
 
   save(): void {

@@ -5,8 +5,8 @@ import {colors} from "../lib/colors";
 import {EditEntryComponent} from "../edit-entry/edit-entry.component";
 import {MatDialog} from "@angular/material/dialog";
 import {Subject} from "rxjs";
-const moment = require("moment");
-const uuid = require('uuid');
+import moment from "moment";
+import { v4 as uuid } from "uuid";
 
 moment.updateLocale('de', {
   week: {
@@ -40,9 +40,9 @@ export class CalendarComponent {
   events: CalendarEvent[] = [
     {
       title: 'Feiertag Test',
-      id: uuid.v4(),
-      start: new Date('2023-01-18'),
-      end: new Date('2023-01-18'),
+      id: uuid(),
+      start: new Date('2023-01-25'),
+      end: new Date('2023-01-25'),
       color: { ...colors.red },
       meta: {
         details: 'Moooh'
@@ -51,9 +51,9 @@ export class CalendarComponent {
     },
     {
       title: 'Event 1',
-      id: uuid.v4(),
-      start: new Date('2023-01-18T10:00:00'),
-      end: new Date('2023-01-18T13:00:00'),
+      id: uuid(),
+      start: new Date('2023-01-24T10:00:00'),
+      end: new Date('2023-01-24T13:00:00'),
       color: { ...colors.blue },
       meta: {
         details: 'Miau'
@@ -66,7 +66,7 @@ export class CalendarComponent {
     },
     {
       title: 'Event 2',
-      id: uuid.v4(),
+      id: uuid(),
       start: moment(new Date()).add(-1, 'hours').toDate(),
       end: moment(new Date()).add(4, 'hours').toDate(),
       color: { ...colors.yellow },
