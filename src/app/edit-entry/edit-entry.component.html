@@ -42,9 +42,16 @@
       </div>
     </div>
   </div>
+  <div class="flex flex-row">
+    <div class="basis-1/2">
+      <button mat-raised-button color="warn" *ngIf="existingEvent" (click)="delete()">Löschen</button>
+    </div>
+    <div class="basis-1/2 text-right">
+      <button class="mr-2" mat-raised-button color="primary" (click)="closeDialog()">Abbrechen</button>
+      <button mat-raised-button color="primary" (click)="save()">Speichern</button>
+    </div>
+  </div>
+
+
+
 </mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-raised-button color="warn" *ngIf="existingEvent" (click)="delete()">Löschen</button>
-  <button mat-raised-button color="primary" (click)="closeDialog()">Abbrechen</button>
-  <button mat-raised-button color="primary" (click)="save()">Speichern</button>
-</mat-dialog-actions>
