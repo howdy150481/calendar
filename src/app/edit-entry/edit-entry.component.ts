@@ -43,6 +43,7 @@ export class EditEntryComponent {
       this.details = data.event.meta.details
     } else {
       this.id = uuid.v4()
+
       this.dateStart = moment(data.date.toISOString()).format("DD.MM.YYYY");
       this.timeStart = moment(data.date.toISOString()).format("HH:mm");
       this.dateEnd = moment(data.date.toISOString()).format("DD.MM.YYYY");
