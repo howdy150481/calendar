@@ -18,6 +18,14 @@
     </div>
   </div>
   <mat-form-field>
+    <mat-label>Farbe</mat-label>
+    <mat-select [(ngModel)]="color">
+      <mat-option *ngFor="let colorOption of colorOptions" [value]="colorOption[0]">
+        {{ colorOption[1].text }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
     <mat-label>Details</mat-label>
     <textarea matInput rows="10" [(ngModel)]="details"></textarea>
   </mat-form-field>

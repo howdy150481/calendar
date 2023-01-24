@@ -5,7 +5,7 @@ import moment from "moment";
 import { v4 as uuid } from "uuid";
 
 import { colors } from "../lib/colors";
-import {formatDateField, formatTimeField } from "../lib/cleave";
+import { formatDateField, formatTimeField } from "../lib/cleave";
 
 @Component({
   selector: 'app-edit-entry',
@@ -16,16 +16,19 @@ export class EditEntryComponent {
   @Output() saveEvent = new EventEmitter();
   @Output() deleteEvent = new EventEmitter();
 
+  colorOptions: any[] = Object.entries(colors);
+
   existingEvent: boolean = false;
 
-  id: string = '';
+  id: string;
+  title: string;
+  details: string;
+  dateStart: string;
+  timeStart: string;
+  dateEnd: string;
+  timeEnd: string;
   allDay: boolean = false;
-  title: string = '';
-  details: string = '';
-  dateStart: string = '';
-  timeStart: string = '';
-  dateEnd: string = '';
-  timeEnd: string = '';
+  color: string;
 
   constructor(
     public editEntryDialogRef: MatDialogRef<EditEntryComponent>,
@@ -44,6 +47,7 @@ export class EditEntryComponent {
 
       this.title = data.event.title;
       this.details = data.event.meta.details
+      this.color = data.event.meta.colorId;
     } else {
       this.id = uuid()
 
@@ -72,9 +76,10 @@ export class EditEntryComponent {
       title: this.title,
       start: new Date(dateStart + "T" + this.timeStart + ':00'),
       end: new Date(dateEnd + "T" + this.timeEnd + ':00'),
-      color: { ...colors.yellow },
+      color: { ...colors[this.color] },
       meta: {
-        details: this.details
+        details: this.details,
+        colorId: this.color
       },
       resizable: {
         beforeStart: true,

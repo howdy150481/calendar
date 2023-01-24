@@ -43,10 +43,16 @@ export class CalendarComponent {
       id: uuid(),
       start: new Date('2023-01-25'),
       end: new Date('2023-01-25'),
-      color: { ...colors.red },
+      color: { ...colors.pink },
       meta: {
-        details: 'Moooh'
+        details: 'Moooh',
+        colorId: 'pink'
       },
+      resizable: {
+        beforeStart: false,
+        afterEnd: false,
+      },
+      draggable: false,
       allDay: true,
     },
     {
@@ -54,9 +60,10 @@ export class CalendarComponent {
       id: uuid(),
       start: new Date('2023-01-24T10:00:00'),
       end: new Date('2023-01-24T13:00:00'),
-      color: { ...colors.blue },
+      color: { ...colors.purple },
       meta: {
-        details: 'Miau'
+        details: 'Miau',
+        colorId: 'purple'
       },
       resizable: {
         beforeStart: true,
@@ -71,7 +78,8 @@ export class CalendarComponent {
       end: moment(new Date()).add(4, 'hours').toDate(),
       color: { ...colors.yellow },
       meta: {
-        details: 'Wuff'
+        details: 'Wuff',
+        colorId: 'yellow'
       },
       resizable: {
         beforeStart: true,

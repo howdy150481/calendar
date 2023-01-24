@@ -1,14 +1,50 @@
 export const colors: any = {
   red: {
-    primary: '#ad2121',
-    secondary: '#FAE3E3',
+    text: 'Rot',
+    colorId: 'red',
+    primary: '#FF0000',
+    secondary: '#FF5151'
   },
-  blue: {
-    primary: '#1e90ff',
-    secondary: '#D1E8FF',
+  orange: {
+    text: 'Orange',
+    colorId: 'orange',
+    primary: '#FFA500',
+    secondary: '#FFB347'
   },
   yellow: {
-    primary: '#e3bc08',
-    secondary: '#FDF1BA',
+    text: 'Gelb',
+    colorId: 'yellow',
+    primary: '#FFFF00',
+    secondary: '#FFFF66'
   },
+  green: {
+    text: 'Grün',
+    colorId: 'green',
+    primary: '#00FF00',
+    secondary: '#99FF99'
+  },
+  blue: {
+    text: 'Blau',
+    colorId: 'blue',
+    primary: '#0000FF',
+    secondary: '#6699FF'
+  },
+  purple: {
+    text: 'Violett',
+    colorId: 'purple',
+    primary: '#660066',
+    secondary: '#996699'
+  },
+  pink: {
+    text: 'Pink',
+    colorId: 'pink',
+    primary: '#FF00FF',
+    secondary: '#FF66FF'
+  },
+  brown: {
+    text: 'Braun',
+    colorId: 'brown',
+    primary: '#A52A2A',
+    secondary: '#CC9966'
+  }
 };
