@@ -3,9 +3,9 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog
 import { ConfirmDialogComponent } from '../helper/confirm-dialog/confirm-dialog.component';
 import moment from "moment";
 import { v4 as uuid } from "uuid";
-
 import { colors } from "../lib/colors";
 import { formatDateField, formatTimeField } from "../lib/cleave";
+import {FormControl, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-edit-entry',
@@ -13,22 +13,22 @@ import { formatDateField, formatTimeField } from "../lib/cleave";
   styleUrls: ['./edit-entry.component.scss']
 })
 export class EditEntryComponent {
-  @Output() saveEvent = new EventEmitter();
-  @Output() deleteEvent = new EventEmitter();
+  id: string;
+  existingEvent: boolean = false;
+
+  title = new FormControl('', [Validators.required]);
+  details = new FormControl('', [Validators.required]);
+  dateStart = new FormControl('', [Validators.required]);
+  timeStart = new FormControl('', [Validators.required]);
+  dateEnd = new FormControl('', [Validators.required]);
+  timeEnd = new FormControl('', [Validators.required]);
+  allDay = new FormControl(false);
+  color = new FormControl('', [Validators.required]);
 
   colorOptions: any[] = Object.entries(colors);
 
-  existingEvent: boolean = false;
-
-  id: string;
-  title: string;
-  details: string;
-  dateStart: string;
-  timeStart: string;
-  dateEnd: string;
-  timeEnd: string;
-  allDay: boolean = false;
-  color: string;
+  @Output() saveEvent = new EventEmitter();
+  @Output() deleteEvent = new EventEmitter();
 
   constructor(
     public editEntryDialogRef: MatDialogRef<EditEntryComponent>,
@@ -36,25 +36,25 @@ export class EditEntryComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     if(data.event !== undefined) {
-      this.existingEvent = true;
       this.id = data.event.id;
-      this.allDay = data.event.allDay ?? false;
+      this.existingEvent = true;
 
-      this.dateStart = moment(data.event.start.toISOString()).format("DD.MM.YYYY");
-      this.timeStart = moment(data.event.start.toISOString()).format("HH:mm");
-      this.dateEnd = moment(data.event.end.toISOString()).format("DD.MM.YYYY");
-      this.timeEnd = moment(data.event.end.toISOString()).format("HH:mm");
+      this.dateStart.setValue(moment(data.event.start.toISOString()).format("DD.MM.YYYY"));
+      this.timeStart.setValue(moment(data.event.start.toISOString()).format("HH:mm"));
+      this.dateEnd.setValue(moment(data.event.end.toISOString()).format("DD.MM.YYYY"));
+      this.timeEnd.setValue(moment(data.event.end.toISOString()).format("HH:mm"));
 
-      this.title = data.event.title;
-      this.details = data.event.meta.details
-      this.color = data.event.meta.colorId;
+      this.title.setValue(data.event.title);
+      this.details.setValue(data.event.meta.details);
+      this.allDay.setValue(data.event.allDay ?? false);
+      this.color.setValue(data.event.meta.colorId);
     } else {
       this.id = uuid()
 
-      this.dateStart = moment(data.date.toISOString()).format("DD.MM.YYYY");
-      this.timeStart = moment(data.date.toISOString()).format("HH:mm");
-      this.dateEnd = moment(data.date.toISOString()).format("DD.MM.YYYY");
-      this.timeEnd = moment(data.date.toISOString()).format("HH:mm");
+      this.dateStart.setValue(moment(data.date.toISOString()).format("DD.MM.YYYY"));
+      this.timeStart.setValue(moment(data.date.toISOString()).format("HH:mm"));
+      this.dateEnd.setValue(moment(data.date.toISOString()).format("DD.MM.YYYY"));
+      this.timeEnd.setValue(moment(data.date.toISOString()).format("HH:mm"));
     }
   }
 
@@ -68,25 +68,25 @@ export class EditEntryComponent {
   }
 
   save(): void {
-    const dateStart = moment(this.dateStart, "DD.MM.YYYY").format("YYYY-MM-DD");
-    const dateEnd = moment(this.dateEnd, "DD.MM.YYYY").format("YYYY-MM-DD");
+    const dateStart = moment(this.dateStart.value, "DD.MM.YYYY").format("YYYY-MM-DD");
+    const dateEnd = moment(this.dateEnd.value, "DD.MM.YYYY").format("YYYY-MM-DD");
 
     const event = {
       id: this.id,
-      title: this.title,
-      start: new Date(dateStart + "T" + this.timeStart + ':00'),
-      end: new Date(dateEnd + "T" + this.timeEnd + ':00'),
-      color: { ...colors[this.color] },
+      title: this.title.value,
+      start: new Date(dateStart + "T" + this.timeStart.value + ':00'),
+      end: new Date(dateEnd + "T" + this.timeEnd.value + ':00'),
+      color: { ...colors[this.color.value ?? ''] },
       meta: {
-        details: this.details,
-        colorId: this.color
+        details: this.details.value,
+        colorId: this.color.value
       },
       resizable: {
         beforeStart: true,
           afterEnd: true,
       },
       draggable: true,
-      allDay: this.allDay
+      allDay: this.allDay.value
     };
 
     this.saveEvent.emit(event);

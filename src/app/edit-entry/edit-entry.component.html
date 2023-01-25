@@ -1,67 +1,77 @@
 <h2 mat-dialog-title>Eintrag bearbeiten</h2>
 <mat-dialog-content class="mat-typography">
-  <div class="flex flex-row">
-    <div class="basis-3/4 pr-2">
-      <mat-form-field>
-        <mat-label>Titel</mat-label>
-        <input matInput [(ngModel)]="title" />
-      </mat-form-field>
+  <form (ngSubmit)="save()">
+    <div class="flex flex-row">
+      <div class="basis-3/4 pr-2">
+        <mat-form-field>
+          <mat-label>Titel</mat-label>
+          <input matInput [formControl]="title" />
+          <mat-error *ngIf="title.invalid">Dieses Feld muss ausgefüllt werden</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="basis-1/4">
+        <mat-form-field>
+          <mat-label>Ganztägig</mat-label>
+          <mat-select [formControl]="allDay">
+            <mat-option [value]="true">Ja</mat-option>
+            <mat-option [value]="false">Nein</mat-option>
+          </mat-select>
+          <mat-error *ngIf="allDay.invalid">Dieses Feld muss ausgefüllt werden</mat-error>
+        </mat-form-field>
+      </div>
     </div>
-    <div class="basis-1/4">
-      <mat-form-field>
-        <mat-label>Ganztägig</mat-label>
-        <mat-select [(value)]="allDay">
-          <mat-option [value]="true">Ja</mat-option>
-          <mat-option [value]="false">Nein</mat-option>
-        </mat-select>
-      </mat-form-field>
+    <mat-form-field>
+      <mat-label>Farbe</mat-label>
+      <mat-select [formControl]="color">
+        <mat-option *ngFor="let colorOption of colorOptions" [value]="colorOption[0]">
+          {{ colorOption[1].text }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="color.invalid">Dieses Feld muss ausgefüllt werden</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Details</mat-label>
+      <textarea matInput rows="10" [formControl]="details"></textarea>
+      <mat-error *ngIf="details.invalid">Dieses Feld muss ausgefüllt werden</mat-error>
+    </mat-form-field>
+    <div class="flex flex-row">
+      <div class="basis-2/4 pr-2">
+        <mat-form-field>
+          <mat-label>Start Datum</mat-label>
+          <input id="date-start" matInput [formControl]="dateStart" />
+          <mat-error *ngIf="dateStart.invalid">Dieses Feld muss ausgefüllt werden</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="basis-2/4 pr-2 {{ allDay.value ? 'hidden' : 'block' }}">
+        <mat-form-field>
+          <mat-label>Start Uhrzeit</mat-label>
+          <input id="time-start" matInput [formControl]="timeStart" />
+          <mat-error *ngIf="timeStart.invalid">Dieses Feld muss ausgefüllt werden</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="basis-2/4 pr-2">
+        <mat-form-field>
+          <mat-label>Ende Datum</mat-label>
+          <input id="date-end" matInput [formControl]="dateEnd" />
+          <mat-error *ngIf="dateEnd.invalid">Dieses Feld muss ausgefüllt werden</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="basis-2/4 {{ allDay.value ? 'hidden' : 'block' }}">
+        <mat-form-field>
+          <mat-label>Ende Uhrzeit</mat-label>
+          <input id="time-end" matInput [formControl]="timeEnd" />
+          <mat-error *ngIf="timeEnd.invalid">Dieses Feld muss ausgefüllt werden</mat-error>
+        </mat-form-field>
+      </div>
     </div>
-  </div>
-  <mat-form-field>
-    <mat-label>Farbe</mat-label>
-    <mat-select [(ngModel)]="color">
-      <mat-option *ngFor="let colorOption of colorOptions" [value]="colorOption[0]">
-        {{ colorOption[1].text }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Details</mat-label>
-    <textarea matInput rows="10" [(ngModel)]="details"></textarea>
-  </mat-form-field>
-  <div class="flex flex-row">
-    <div class="basis-2/4 pr-2">
-      <mat-form-field>
-        <mat-label>Start Datum</mat-label>
-        <input id="date-start" matInput [(ngModel)]="dateStart" />
-      </mat-form-field>
+    <div class="flex flex-row">
+      <div class="basis-1/2">
+        <button mat-raised-button color="warn" *ngIf="existingEvent" (click)="delete()">Löschen</button>
+      </div>
+      <div class="basis-1/2 text-right">
+        <button class="mr-2" mat-raised-button color="primary" (click)="closeDialog()">Abbrechen</button>
+        <button mat-raised-button color="primary" type="submit">Speichern</button>
+      </div>
     </div>
-    <div class="basis-2/4 pr-2 {{ allDay ? 'hidden' : 'block' }}">
-      <mat-form-field>
-        <mat-label>Start Uhrzeit</mat-label>
-        <input id="time-start" matInput [(ngModel)]="timeStart" />
-      </mat-form-field>
-    </div>
-    <div class="basis-2/4 pr-2">
-      <mat-form-field>
-        <mat-label>Ende Datum</mat-label>
-        <input id="date-end" matInput [(ngModel)]="dateEnd" />
-      </mat-form-field>
-    </div>
-    <div class="basis-2/4 {{ allDay ? 'hidden' : 'block' }}">
-      <mat-form-field>
-        <mat-label>Ende Uhrzeit</mat-label>
-        <input id="time-end" matInput [(ngModel)]="timeEnd" />
-      </mat-form-field>
-    </div>
-  </div>
-  <div class="flex flex-row">
-    <div class="basis-1/2">
-      <button mat-raised-button color="warn" *ngIf="existingEvent" (click)="delete()">Löschen</button>
-    </div>
-    <div class="basis-1/2 text-right">
-      <button class="mr-2" mat-raised-button color="primary" (click)="closeDialog()">Abbrechen</button>
-      <button mat-raised-button color="primary" (click)="save()">Speichern</button>
-    </div>
-  </div>
+  </form>
 </mat-dialog-content>
