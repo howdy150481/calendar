@@ -1,12 +1,11 @@
 import {Component} from '@angular/core';
 import {CalendarDateFormatter, CalendarEvent, CalendarView, DAYS_OF_WEEK} from "angular-calendar";
 import {CustomDateFormatter} from "./custom-date-formatter.provider";
-import {colors} from "../lib/colors";
 import {EditEntryComponent} from "../edit-entry/edit-entry.component";
 import {MatDialog} from "@angular/material/dialog";
 import {Subject} from "rxjs";
 import moment from "moment";
-import { v4 as uuid } from "uuid";
+import {exampleEvents} from "../lib/example_events";
 
 moment.updateLocale('de', {
   week: {
@@ -37,57 +36,7 @@ export class CalendarComponent {
   weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
   weekendDays: number[] = [DAYS_OF_WEEK.FRIDAY, DAYS_OF_WEEK.SATURDAY];
 
-  events: CalendarEvent[] = [
-    {
-      title: 'Feiertag Test',
-      id: uuid(),
-      start: new Date('2023-01-25'),
-      end: new Date('2023-01-25'),
-      color: { ...colors.pink },
-      meta: {
-        details: 'Moooh',
-        colorId: 'pink'
-      },
-      resizable: {
-        beforeStart: false,
-        afterEnd: false,
-      },
-      draggable: false,
-      allDay: true,
-    },
-    {
-      title: 'Event 1',
-      id: uuid(),
-      start: new Date('2023-01-24T10:00:00'),
-      end: new Date('2023-01-24T13:00:00'),
-      color: { ...colors.purple },
-      meta: {
-        details: 'Miau',
-        colorId: 'purple'
-      },
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-    {
-      title: 'Event 2',
-      id: uuid(),
-      start: moment(new Date()).add(-1, 'hours').toDate(),
-      end: moment(new Date()).add(4, 'hours').toDate(),
-      color: { ...colors.yellow },
-      meta: {
-        details: 'Wuff',
-        colorId: 'yellow'
-      },
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    }
-  ];
+  events: CalendarEvent[] = exampleEvents;
 
   changeViewDate(viewDate: Date): void {
     this.viewDate = viewDate;
