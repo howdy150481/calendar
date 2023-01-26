@@ -5,7 +5,8 @@ import moment from "moment";
 import { v4 as uuid } from "uuid";
 import { colors } from "../lib/colors";
 import { formatDateField, formatTimeField } from "../lib/cleave";
-import {FormControl, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {AlertDialogComponent} from "../helper/alert-dialog/alert-dialog.component";
 
 @Component({
   selector: 'app-edit-entry',
@@ -16,14 +17,16 @@ export class EditEntryComponent {
   id: string;
   existingEvent: boolean = false;
 
-  title = new FormControl('', [Validators.required]);
-  details = new FormControl('', [Validators.required]);
-  dateStart = new FormControl('', [Validators.required]);
-  timeStart = new FormControl('', [Validators.required]);
-  dateEnd = new FormControl('', [Validators.required]);
-  timeEnd = new FormControl('', [Validators.required]);
-  allDay = new FormControl(false);
-  color = new FormControl('', [Validators.required]);
+  form: FormGroup = new FormGroup({
+    title: new FormControl('', [Validators.required]),
+    details: new FormControl('', [Validators.required]),
+    dateStart: new FormControl('', [Validators.required]),
+    timeStart: new FormControl('', [Validators.required]),
+    dateEnd: new FormControl('', [Validators.required]),
+    timeEnd: new FormControl('', [Validators.required]),
+    allDay: new FormControl(false),
+    color: new FormControl('', [Validators.required])
+  });
 
   colorOptions: any[] = Object.entries(colors);
 
@@ -32,34 +35,34 @@ export class EditEntryComponent {
 
   constructor(
     public editEntryDialogRef: MatDialogRef<EditEntryComponent>,
-    public confirmDialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-  ) {
-    if(data.event !== undefined) {
-      this.id = data.event.id;
-      this.existingEvent = true;
-
-      this.dateStart.setValue(moment(data.event.start.toISOString()).format("DD.MM.YYYY"));
-      this.timeStart.setValue(moment(data.event.start.toISOString()).format("HH:mm"));
-      this.dateEnd.setValue(moment(data.event.end.toISOString()).format("DD.MM.YYYY"));
-      this.timeEnd.setValue(moment(data.event.end.toISOString()).format("HH:mm"));
-
-      this.title.setValue(data.event.title);
-      this.details.setValue(data.event.meta.details);
-      this.allDay.setValue(data.event.allDay ?? false);
-      this.color.setValue(data.event.meta.colorId);
-    } else {
-      this.id = uuid()
-
-      this.dateStart.setValue(moment(data.date.toISOString()).format("DD.MM.YYYY"));
-      this.timeStart.setValue(moment(data.date.toISOString()).format("HH:mm"));
-      this.dateEnd.setValue(moment(data.date.toISOString()).format("DD.MM.YYYY"));
-      this.timeEnd.setValue(moment(data.date.toISOString()).format("HH:mm"));
-    }
-  }
+    public matDialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
 
   ngOnInit() {
     this.editEntryDialogRef.updateSize('80%');
+
+    if(this.data.event !== undefined) {
+      this.id = this.data.event.id;
+      this.existingEvent = true;
+
+      this.form.get('dateStart').setValue(moment(this.data.event.start.toISOString()).format("DD.MM.YYYY"));
+      this.form.get('timeStart').setValue(moment(this.data.event.start.toISOString()).format("HH:mm"));
+      this.form.get('dateEnd').setValue(moment(this.data.event.end.toISOString()).format("DD.MM.YYYY"));
+      this.form.get('timeEnd').setValue(moment(this.data.event.end.toISOString()).format("HH:mm"));
+
+      this.form.get('title').setValue(this.data.event.title);
+      this.form.get('details').setValue(this.data.event.meta.details);
+      this.form.get('allDay').setValue(this.data.event.allDay ?? false);
+      this.form.get('color').setValue(this.data.event.meta.colorId);
+    } else {
+      this.id = uuid()
+
+      this.form.get('dateStart').setValue(moment(this.data.date.toISOString()).format("DD.MM.YYYY"));
+      this.form.get('timeStart').setValue(moment(this.data.date.toISOString()).format("HH:mm"));
+      this.form.get('dateEnd').setValue(moment(this.data.date.toISOString()).format("DD.MM.YYYY"));
+      this.form.get('timeEnd').setValue(moment(this.data.date.toISOString()).format("HH:mm"));
+    }
 
     formatDateField('date-start');
     formatDateField('date-end');
@@ -68,33 +71,42 @@ export class EditEntryComponent {
   }
 
   save(): void {
-    const dateStart = moment(this.dateStart.value, "DD.MM.YYYY").format("YYYY-MM-DD");
-    const dateEnd = moment(this.dateEnd.value, "DD.MM.YYYY").format("YYYY-MM-DD");
+    if (this.form.valid) {
+      const dateStart = moment(this.form.get('dateStart').value, "DD.MM.YYYY").format("YYYY-MM-DD");
+      const dateEnd = moment(this.form.get('dateEnd').value, "DD.MM.YYYY").format("YYYY-MM-DD");
 
-    const event = {
-      id: this.id,
-      title: this.title.value,
-      start: new Date(dateStart + "T" + this.timeStart.value + ':00'),
-      end: new Date(dateEnd + "T" + this.timeEnd.value + ':00'),
-      color: { ...colors[this.color.value ?? ''] },
-      meta: {
-        details: this.details.value,
-        colorId: this.color.value
-      },
-      resizable: {
-        beforeStart: true,
-          afterEnd: true,
-      },
-      draggable: true,
-      allDay: this.allDay.value
-    };
+      const event = {
+        id: this.id,
+        title: this.form.get('title').value,
+        start: new Date(dateStart + "T" + this.form.get('timeStart').value + ':00'),
+        end: new Date(dateEnd + "T" + this.form.get('timeEnd').value + ':00'),
+        color: { ...colors[this.form.get('color').value] },
+        meta: {
+          details: this.form.get('details').value,
+          colorId: this.form.get('color').value
+        },
+        resizable: {
+          beforeStart: true,
+            afterEnd: true,
+        },
+        draggable: true,
+        allDay: this.form.get('allDay').value
+      };
 
-    this.saveEvent.emit(event);
-    this.editEntryDialogRef.close();
+      this.saveEvent.emit(event);
+      this.editEntryDialogRef.close();
+    } else {
+      this.matDialog.open(AlertDialogComponent, {
+        data: {
+          title: "Fehler im Formular?",
+          message: "Der Termin wurde nicht korrekt ausgefüllt"
+        }
+      });
+    }
   }
 
   delete(): void {
-    const confirmDialogRef = this.confirmDialog.open(ConfirmDialogComponent, {
+    const confirmDialogRef = this.matDialog.open(ConfirmDialogComponent, {
       data: {
         title: "Eintrag löschen?",
         message: "Soll dieser Termin wirklich gelöscht werden?"
