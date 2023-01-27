@@ -4,15 +4,8 @@ import {CustomDateFormatter} from "./custom-date-formatter.provider";
 import {EditEntryComponent} from "../edit-entry/edit-entry.component";
 import {MatDialog} from "@angular/material/dialog";
 import {Subject} from "rxjs";
-import moment from "moment";
+import {holidayEvents} from "../lib/holiday_events";
 import {exampleEvents} from "../lib/example_events";
-
-moment.updateLocale('de', {
-  week: {
-    dow: DAYS_OF_WEEK.MONDAY,
-    doy: 0,
-  },
-});
 
 @Component({
   selector: 'app-calendar',
@@ -36,7 +29,7 @@ export class CalendarComponent {
   weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
   weekendDays: number[] = [DAYS_OF_WEEK.FRIDAY, DAYS_OF_WEEK.SATURDAY];
 
-  events: CalendarEvent[] = exampleEvents;
+  events: CalendarEvent[] = [...holidayEvents, ...exampleEvents];
 
   changeViewDate(viewDate: Date): void {
     this.viewDate = viewDate;

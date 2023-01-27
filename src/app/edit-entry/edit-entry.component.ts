@@ -5,8 +5,9 @@ import moment from "moment";
 import { v4 as uuid } from "uuid";
 import { colors } from "../lib/colors";
 import { formatDateField, formatTimeField } from "../lib/cleave";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AlertDialogComponent} from "../helper/alert-dialog/alert-dialog.component";
+import {DateTime} from "luxon";
 
 @Component({
   selector: 'app-edit-entry',
@@ -19,7 +20,7 @@ export class EditEntryComponent {
 
   form: FormGroup = new FormGroup({
     title: new FormControl('', [Validators.required]),
-    details: new FormControl('', [Validators.required]),
+    details: new FormControl('', []),
     dateStart: new FormControl('', [Validators.required]),
     timeStart: new FormControl('', [Validators.required]),
     dateEnd: new FormControl('', [Validators.required]),
@@ -46,10 +47,10 @@ export class EditEntryComponent {
       this.id = this.data.event.id;
       this.existingEvent = true;
 
-      this.form.get('dateStart').setValue(moment(this.data.event.start.toISOString()).format("DD.MM.YYYY"));
-      this.form.get('timeStart').setValue(moment(this.data.event.start.toISOString()).format("HH:mm"));
-      this.form.get('dateEnd').setValue(moment(this.data.event.end.toISOString()).format("DD.MM.YYYY"));
-      this.form.get('timeEnd').setValue(moment(this.data.event.end.toISOString()).format("HH:mm"));
+      this.fillFormDateTimeForm(
+          this.data.event.start.toISOString(),
+          this.data.event.end.toISOString()
+      );
 
       this.form.get('title').setValue(this.data.event.title);
       this.form.get('details').setValue(this.data.event.meta.details);
@@ -58,16 +59,30 @@ export class EditEntryComponent {
     } else {
       this.id = uuid()
 
-      this.form.get('dateStart').setValue(moment(this.data.date.toISOString()).format("DD.MM.YYYY"));
-      this.form.get('timeStart').setValue(moment(this.data.date.toISOString()).format("HH:mm"));
-      this.form.get('dateEnd').setValue(moment(this.data.date.toISOString()).format("DD.MM.YYYY"));
-      this.form.get('timeEnd').setValue(moment(this.data.date.toISOString()).format("HH:mm"));
+      this.fillFormDateTimeForm(
+          this.data.date.toISOString(),
+          this.data.date.toISOString()
+      );
     }
 
     formatDateField('date-start');
     formatDateField('date-end');
     formatTimeField('time-start');
     formatTimeField('time-end');
+  }
+
+  fillFormDateTimeForm(start: string, end: string): void {
+    const dateStart = DateTime.fromISO(start).toFormat('dd.MM.yyyy');
+    this.form.get('dateStart').setValue(dateStart);
+
+    const timeStart = DateTime.fromISO(start).toFormat('HH:mm');
+    this.form.get('timeStart').setValue(timeStart);
+
+    const dateEnd = DateTime.fromISO(end).toFormat('dd.MM.yyyy');
+    this.form.get('dateEnd').setValue(dateEnd);
+
+    const timeEnd = DateTime.fromISO(end).toFormat('HH:mm');
+    this.form.get('timeEnd').setValue(timeEnd);
   }
 
   save(): void {

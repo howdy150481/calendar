@@ -1,16 +1,15 @@
 import {v4 as uuid} from "uuid";
-import moment from "moment/moment";
 import { colors } from "./colors";
 
 export const exampleEvents: any[] = [
   {
-    title: 'Feiertag Test',
+    title: 'Urlaub',
     id: uuid(),
     start: new Date('2023-01-25'),
-    end: new Date('2023-01-25'),
+    end: new Date('2023-01-30'),
     color: { ...colors.pink },
     meta: {
-      details: 'Moooh',
+      details: 'Juhuu....',
       colorId: 'pink'
     },
     resizable: {
@@ -39,8 +38,8 @@ export const exampleEvents: any[] = [
   {
     title: 'Event 2',
     id: uuid(),
-    start: moment(new Date()).add(-1, 'hours').toDate(),
-    end: moment(new Date()).add(4, 'hours').toDate(),
+    start: new Date('2023-01-27T09:00:00'),
+    end: new Date('2023-01-27T18:00:00'),
     color: { ...colors.yellow },
     meta: {
       details: 'Wuff',
