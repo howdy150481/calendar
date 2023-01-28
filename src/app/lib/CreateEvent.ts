@@ -12,6 +12,7 @@ export default class CreateEvent {
   private dateEnd: string = ''
   private timeEnd: string = '00:00'
   private allDay: boolean = false;
+  private editable: boolean = true;
 
   setId(value: string): CreateEvent {
     this.id = value;
@@ -58,6 +59,11 @@ export default class CreateEvent {
     return this;
   }
 
+  setEditable(value: boolean): CreateEvent {
+    this.editable = value;
+    return this;
+  }
+
   public getEvent(): CalendarEvent {
     const start = this.dateStart + "T" + this.timeStart + ':00';
     const end = this.dateEnd + "T" + this.timeEnd + ':00';
@@ -69,6 +75,7 @@ export default class CreateEvent {
       end: new Date(end),
       color: { ...colors[this.color] },
       meta: {
+        editable: this.editable,
         details: this.details,
         colorId: this.color
       },

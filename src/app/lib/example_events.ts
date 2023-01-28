@@ -9,6 +9,7 @@ export const exampleEvents: any[] = [
     end: new Date('2023-01-30'),
     color: { ...colors.pink },
     meta: {
+      editable: true,
       details: 'Juhuu....',
       colorId: 'pink'
     },
@@ -26,6 +27,7 @@ export const exampleEvents: any[] = [
     end: new Date('2023-01-24T13:00:00'),
     color: { ...colors.purple },
     meta: {
+      editable: true,
       details: 'Miau',
       colorId: 'purple'
     },
@@ -42,6 +44,7 @@ export const exampleEvents: any[] = [
     end: new Date('2023-01-27T18:00:00'),
     color: { ...colors.yellow },
     meta: {
+      editable: true,
       details: 'Wuff',
       colorId: 'yellow'
     },

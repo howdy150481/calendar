@@ -6,6 +6,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {Subject} from "rxjs";
 import {exampleEvents} from "../lib/example_events";
 import HolidaysCalculator from "../lib/HolidaysCalculator";
+import {AlertDialogComponent} from "../helper/alert-dialog/alert-dialog.component";
 
 @Component({
   selector: 'app-calendar',
@@ -30,7 +31,7 @@ export class CalendarComponent {
   events: CalendarEvent[] = [...exampleEvents];
   // events: CalendarEvent[] = [];
 
-  constructor(public dialog: MatDialog) {
+  constructor(public matDialog: MatDialog) {
     let holidaysCalculator = new HolidaysCalculator();
     const holidays = holidaysCalculator
       .setYear(2023)
@@ -54,7 +55,7 @@ export class CalendarComponent {
   }
 
   onHourSegmentClicked(event: any): void {
-    const dialogRef = this.dialog.open(EditEntryComponent, {
+    const dialogRef = this.matDialog.open(EditEntryComponent, {
       data: event
     });
     dialogRef.componentInstance.saveEvent.subscribe((event: any) => {
@@ -64,25 +65,34 @@ export class CalendarComponent {
   }
 
   onEventClicked(event: any): void {
-    const dialogRef = this.dialog.open(EditEntryComponent, {
-      data: event
-    });
-    dialogRef.componentInstance.saveEvent.subscribe((event: any) => {
-      for (let key in this.events) {
-        if (this.events[key].id === event.id) {
-          this.events[key] = event
+    if (!event.event.meta.editable) {
+      this.matDialog.open(AlertDialogComponent, {
+        data: {
+          title: "Termin gesperrt",
+          message: "Dieser Termin kann nicht verändert werden."
         }
-      }
-      this.refresh.next();
-    });
-    dialogRef.componentInstance.deleteEvent.subscribe((id: string) => {
-      for (let key in this.events) {
-        if (this.events[key].id === id) {
-          this.events.splice(Number(key), 1);
+      });
+    } else {
+      const dialogRef = this.matDialog.open(EditEntryComponent, {
+        data: event
+      });
+      dialogRef.componentInstance.saveEvent.subscribe((event: any) => {
+        for (let key in this.events) {
+          if (this.events[key].id === event.id) {
+            this.events[key] = event
+          }
         }
-      }
-      this.refresh.next();
-    });
+        this.refresh.next();
+      });
+      dialogRef.componentInstance.deleteEvent.subscribe((id: string) => {
+        for (let key in this.events) {
+          if (this.events[key].id === id) {
+            this.events.splice(Number(key), 1);
+          }
+        }
+        this.refresh.next();
+      });
+    }
   }
 
   onEventTimesChanged(event: any): void {

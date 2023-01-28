@@ -12,15 +12,23 @@ export default class HolidaysCalculator {
   }
 
   public calculateHolidays() {
-    let createEvent;
+    let createEvent = new CreateEvent();
 
-    createEvent = new CreateEvent();
+    createEvent
+      .setColor('green')
+      .setAllDay(true)
+      .setEditable(false);
+
     createEvent
       .setTitle('Neujahr')
-      .setColor('green')
       .setDateStart('2023-01-23')
-      .setDateEnd('2023-01-23')
-      .setAllDay(true);
+      .setDateEnd('2023-01-23');
+    this.holidays.push(createEvent.getEvent());
+
+    createEvent
+      .setTitle('Moooh 2')
+      .setDateStart('2023-01-25')
+      .setDateEnd('2023-01-25');
     this.holidays.push(createEvent.getEvent());
 
     // createEvent = new CreateEvent();
