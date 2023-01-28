@@ -7,7 +7,7 @@ import { colors } from "../lib/colors";
 import { formatDateField, formatTimeField } from "../lib/cleave";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AlertDialogComponent} from "../helper/alert-dialog/alert-dialog.component";
-import {DateTime} from "luxon";
+import CreateEvent from "../lib/CreateEvent";
 
 @Component({
   selector: 'app-edit-entry',
@@ -47,10 +47,7 @@ export class EditEntryComponent {
       this.id = this.data.event.id;
       this.existingEvent = true;
 
-      this.fillFormDateTimeForm(
-          this.data.event.start.toISOString(),
-          this.data.event.end.toISOString()
-      );
+      this.fillFormDateTimeForm(this.data.event.start, this.data.event.end);
 
       this.form.get('title').setValue(this.data.event.title);
       this.form.get('details').setValue(this.data.event.meta.details);
@@ -59,10 +56,7 @@ export class EditEntryComponent {
     } else {
       this.id = uuid()
 
-      this.fillFormDateTimeForm(
-          this.data.date.toISOString(),
-          this.data.date.toISOString()
-      );
+      this.fillFormDateTimeForm(this.data.date, this.data.date);
     }
 
     formatDateField('date-start');
@@ -71,44 +65,33 @@ export class EditEntryComponent {
     formatTimeField('time-end');
   }
 
-  fillFormDateTimeForm(start: string, end: string): void {
-    const dateStart = DateTime.fromISO(start).toFormat('dd.MM.yyyy');
-    this.form.get('dateStart').setValue(dateStart);
-
-    const timeStart = DateTime.fromISO(start).toFormat('HH:mm');
-    this.form.get('timeStart').setValue(timeStart);
-
-    const dateEnd = DateTime.fromISO(end).toFormat('dd.MM.yyyy');
-    this.form.get('dateEnd').setValue(dateEnd);
-
-    const timeEnd = DateTime.fromISO(end).toFormat('HH:mm');
-    this.form.get('timeEnd').setValue(timeEnd);
+  fillFormDateTimeForm(start, end): void {
+    this.form.get('dateStart').setValue(moment(start).format('DD.MM.YYYY'));
+    this.form.get('timeStart').setValue(moment(start).format('HH:mm'));
+    this.form.get('dateEnd').setValue(moment(end).format('DD.MM.YYYY'));
+    this.form.get('timeEnd').setValue(moment(end).format('HH:mm'));
   }
 
   save(): void {
     if (this.form.valid) {
-      const dateStart = moment(this.form.get('dateStart').value, "DD.MM.YYYY").format("YYYY-MM-DD");
-      const dateEnd = moment(this.form.get('dateEnd').value, "DD.MM.YYYY").format("YYYY-MM-DD");
+      const start = this.form.get('dateStart').value;
+      const dateStart = moment(start, "DD.MM.YYYY").format("YYYY-MM-DD");
+      const end = this.form.get('dateEnd').value
+      const dateEnd = moment(end, "DD.MM.YYYY").format("YYYY-MM-DD");
 
-      const event = {
-        id: this.id,
-        title: this.form.get('title').value,
-        start: new Date(dateStart + "T" + this.form.get('timeStart').value + ':00'),
-        end: new Date(dateEnd + "T" + this.form.get('timeEnd').value + ':00'),
-        color: { ...colors[this.form.get('color').value] },
-        meta: {
-          details: this.form.get('details').value,
-          colorId: this.form.get('color').value
-        },
-        resizable: {
-          beforeStart: true,
-            afterEnd: true,
-        },
-        draggable: true,
-        allDay: this.form.get('allDay').value
-      };
+      let createEvent = new CreateEvent();
+      createEvent
+        .setId(this.id)
+        .setTitle(this.form.get('title').value)
+        .setDetails(this.form.get('details').value)
+        .setColor(this.form.get('color').value)
+        .setDateStart(dateStart)
+        .setTimeStart(this.form.get('timeStart').value)
+        .setDateEnd(dateEnd)
+        .setTimeEnd(this.form.get('timeEnd').value)
+        .setAllDay(this.form.get('allDay').value);
 
-      this.saveEvent.emit(event);
+      this.saveEvent.emit(createEvent.getEvent());
       this.editEntryDialogRef.close();
     } else {
       this.matDialog.open(AlertDialogComponent, {

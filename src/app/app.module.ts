@@ -42,7 +42,10 @@ export function momentAdapterFactory() {
     BrowserModule,
     ReactiveFormsModule,
     FormsModule,
-    CalendarModule.forRoot({ provide: DateAdapter, useFactory: momentAdapterFactory }),
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: momentAdapterFactory
+    }),
     BrowserAnimationsModule,
     MatButtonModule,
     MatDialogModule,

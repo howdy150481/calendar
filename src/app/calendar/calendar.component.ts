@@ -4,8 +4,8 @@ import {CustomDateFormatter} from "./custom-date-formatter.provider";
 import {EditEntryComponent} from "../edit-entry/edit-entry.component";
 import {MatDialog} from "@angular/material/dialog";
 import {Subject} from "rxjs";
-import {holidayEvents} from "../lib/holiday_events";
 import {exampleEvents} from "../lib/example_events";
+import HolidaysCalculator from "../lib/HolidaysCalculator";
 
 @Component({
   selector: 'app-calendar',
@@ -19,8 +19,6 @@ import {exampleEvents} from "../lib/example_events";
   ]
 })
 export class CalendarComponent {
-  constructor(public dialog: MatDialog) {}
-
   refresh = new Subject<void>();
 
   view: CalendarView = CalendarView.Week;
@@ -29,7 +27,18 @@ export class CalendarComponent {
   weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
   weekendDays: number[] = [DAYS_OF_WEEK.FRIDAY, DAYS_OF_WEEK.SATURDAY];
 
-  events: CalendarEvent[] = [...holidayEvents, ...exampleEvents];
+  events: CalendarEvent[] = [...exampleEvents];
+  // events: CalendarEvent[] = [];
+
+  constructor(public dialog: MatDialog) {
+    let holidaysCalculator = new HolidaysCalculator();
+    const holidays = holidaysCalculator
+      .setYear(2023)
+      .calculateHolidays()
+      .getHolidays();
+
+    this.events.push(...holidays);
+  }
 
   changeViewDate(viewDate: Date): void {
     this.viewDate = viewDate;
