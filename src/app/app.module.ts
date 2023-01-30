@@ -20,6 +20,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { EditEntryComponent } from './edit-entry/edit-entry.component';
 import { ConfirmDialogComponent } from './helper/confirm-dialog/confirm-dialog.component';
 import { AlertDialogComponent } from './helper/alert-dialog/alert-dialog.component';
+import { ListViewComponent } from './calendar/list-view/list-view.component';
 
 const moment = require("moment");
 
@@ -36,7 +37,8 @@ export function momentAdapterFactory() {
     CalendarHeaderComponent,
     EditEntryComponent,
     ConfirmDialogComponent,
-    AlertDialogComponent
+    AlertDialogComponent,
+    ListViewComponent
   ],
   imports: [
     BrowserModule,

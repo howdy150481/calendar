@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
-import {CalendarDateFormatter, CalendarEvent, CalendarView, DAYS_OF_WEEK} from "angular-calendar";
+import {CalendarDateFormatter, CalendarEvent, DAYS_OF_WEEK} from "angular-calendar";
+import { CalendarView } from '../lib/CalendarView';
 import {CustomDateFormatter} from "./custom-date-formatter.provider";
 import {EditEntryComponent} from "../edit-entry/edit-entry.component";
 import {MatDialog} from "@angular/material/dialog";
@@ -21,8 +22,10 @@ import {AlertDialogComponent} from "../helper/alert-dialog/alert-dialog.componen
 })
 export class CalendarComponent {
   refresh = new Subject<void>();
+  CalendarView = CalendarView;
 
-  view: CalendarView = CalendarView.Week;
+  view: CalendarView = CalendarView.List;
+
   viewDate = new Date();
   locale: string = 'de';
   weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
@@ -65,6 +68,7 @@ export class CalendarComponent {
   }
 
   onEventClicked(event: any): void {
+    console.log(event);
     if (!event.event.meta.editable) {
       this.matDialog.open(AlertDialogComponent, {
         data: {

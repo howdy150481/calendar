@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import { CalendarView } from 'angular-calendar';
+import { CalendarView } from '../lib/CalendarView';
 const moment = require("moment");
 
 @Component({
