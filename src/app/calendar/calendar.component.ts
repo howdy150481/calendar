@@ -68,7 +68,6 @@ export class CalendarComponent {
   }
 
   onEventClicked(event: any): void {
-    console.log(event);
     if (!event.event.meta.editable) {
       this.matDialog.open(AlertDialogComponent, {
         data: {

@@ -6,7 +6,7 @@ export const exampleEvents: any[] = [
     title: 'Urlaub',
     id: uuid(),
     start: new Date('2023-01-25'),
-    end: new Date('2023-01-30'),
+    end: new Date('2023-01-31'),
     color: { ...colors.pink },
     meta: {
       editable: true,
@@ -23,8 +23,8 @@ export const exampleEvents: any[] = [
   {
     title: 'Event 1',
     id: uuid(),
-    start: new Date('2023-01-24T10:00:00'),
-    end: new Date('2023-01-24T13:00:00'),
+    start: new Date('2023-01-30T10:00:00'),
+    end: new Date('2023-01-30T13:00:00'),
     color: { ...colors.purple },
     meta: {
       editable: true,
@@ -40,8 +40,8 @@ export const exampleEvents: any[] = [
   {
     title: 'Event 2',
     id: uuid(),
-    start: new Date('2023-01-27T09:00:00'),
-    end: new Date('2023-01-27T18:00:00'),
+    start: new Date('2023-02-03T09:00:00'),
+    end: new Date('2023-02-03T18:00:00'),
     color: { ...colors.yellow },
     meta: {
       editable: true,

@@ -7,11 +7,11 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 })
 export class ListViewComponent {
   @Input() events: any[];
-
   @Output() eventClicked = new EventEmitter<any>();
 
+  ngOnInit() {}
+
   onEventClick(event: any) {
-    let newEvent = { event: event }
-    this.eventClicked.emit(newEvent);
+    this.eventClicked.emit({ event: event });
   }
 }

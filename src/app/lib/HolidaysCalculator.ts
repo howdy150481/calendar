@@ -21,31 +21,81 @@ export default class HolidaysCalculator {
 
     createEvent
       .setTitle('Neujahr')
-      .setDateStart('2023-01-23')
-      .setDateEnd('2023-01-23');
+      .setDateStart('2023-01-01')
+      .setDateEnd('2023-01-01');
     this.holidays.push(createEvent.getEvent());
 
     createEvent
-      .setTitle('Moooh 2')
-      .setDateStart('2023-01-25')
-      .setDateEnd('2023-01-25');
+        .setTitle('Karfreitag')
+        .setDateStart(this.getCalculatedDate(-2))
+        .setDateEnd(this.getCalculatedDate(-2));
     this.holidays.push(createEvent.getEvent());
 
-    // createEvent = new CreateEvent();
-    // createEvent
-    //   .setTitle('Ostersonntag')
-    //   .setDateStart(this.getCalculatedDate(0))
-    //   .setDateEnd(this.getCalculatedDate(0))
-    //   .setAllDay(true);
-    // this.holidays.push(createEvent.getEvent());
-    //
-    // createEvent = new CreateEvent();
-    // createEvent
-    //   .setTitle('Ostersonntag')
-    //   .setDateStart(this.getCalculatedDate(1))
-    //   .setDateEnd(this.getCalculatedDate(1))
-    //   .setAllDay(true);
-    // this.holidays.push(createEvent.getEvent());
+    createEvent
+      .setTitle('Ostersonntag')
+      .setDateStart(this.getCalculatedDate(0))
+      .setDateEnd(this.getCalculatedDate(0));
+    this.holidays.push(createEvent.getEvent());
+
+    createEvent
+        .setTitle('Ostermontag')
+        .setDateStart(this.getCalculatedDate(1))
+        .setDateEnd(this.getCalculatedDate(1));
+    this.holidays.push(createEvent.getEvent());
+
+    createEvent
+        .setTitle('Tag der Arbeit')
+        .setDateStart('2023-05-01')
+        .setDateEnd('2023-05-01');
+    this.holidays.push(createEvent.getEvent());
+
+    createEvent
+        .setTitle('Christi Himmelfahrt')
+        .setDateStart(this.getCalculatedDate(39))
+        .setDateEnd(this.getCalculatedDate(39));
+    this.holidays.push(createEvent.getEvent());
+
+    createEvent
+        .setTitle('Pfingstmontag')
+        .setDateStart(this.getCalculatedDate(50))
+        .setDateEnd(this.getCalculatedDate(50));
+    this.holidays.push(createEvent.getEvent());
+
+    createEvent
+        .setTitle('Tag der Deutschen Einheit')
+        .setDateStart('2023-10-03')
+        .setDateEnd('2023-10-03');
+    this.holidays.push(createEvent.getEvent());
+
+    createEvent
+        .setTitle('Reformationstag')
+        .setDateStart('2023-10-31')
+        .setDateEnd('2023-10-31');
+    this.holidays.push(createEvent.getEvent());
+
+    createEvent
+        .setTitle('Heiligabend')
+        .setDateStart('2023-12-24')
+        .setDateEnd('2023-12-24');
+    this.holidays.push(createEvent.getEvent());
+
+    createEvent
+        .setTitle('Erster Weihnachtsfeiertag')
+        .setDateStart('2023-12-25')
+        .setDateEnd('2023-12-25');
+    this.holidays.push(createEvent.getEvent());
+
+    createEvent
+        .setTitle('Zweiter Weihnachtsfeiertag')
+        .setDateStart('2023-12-26')
+        .setDateEnd('2023-12-26');
+    this.holidays.push(createEvent.getEvent());
+
+    createEvent
+        .setTitle('Silvester')
+        .setDateStart('2023-12-31')
+        .setDateEnd('2023-12-31');
+    this.holidays.push(createEvent.getEvent());
 
     return this;
   }
@@ -68,21 +118,3 @@ export default class HolidaysCalculator {
     return holidayDate.format('YYYY-MM-DD');
   }
 }
-
-// $aHolidayList = [
-//     '01.01.' => 'Neujahr',
-//     'E+0'    => 'Ostersonntag',
-//     'E+1'    => 'Ostermontag',
-//     '01.05.' => 'Staatsfeiertag',
-//     'E+39'   => 'Christi Himmelfahrt',
-//     'E+50'   => 'Pfingstmontag',
-//     'E+60'   => 'Fronleichnam',
-//     '15.08.' => 'Maria Himmelfahrt',
-//     '26.10.' => 'Nationalfeiertag',
-//     '01.11.' => 'Allerheiligen',
-//     '08.12.' => 'Maria Empfängnis',
-//     '24.12.' => 'Heilig Abend',
-//     '25.12.' => 'Christtag',
-//     '26.12.' => 'Stefanitag',
-//     '31.12.' => 'Silvester'
-// ];

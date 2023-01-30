@@ -12,10 +12,12 @@ import { adapterFactory } from 'angular-calendar/date-adapters/moment';
 import { CalendarHeaderComponent } from './calendar-header/calendar-header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card';
 
 import { EditEntryComponent } from './edit-entry/edit-entry.component';
 import { ConfirmDialogComponent } from './helper/confirm-dialog/confirm-dialog.component';
@@ -49,10 +51,12 @@ export function momentAdapterFactory() {
       useFactory: momentAdapterFactory
     }),
     BrowserAnimationsModule,
+    MatIconModule,
     MatButtonModule,
     MatDialogModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
