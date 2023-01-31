@@ -24,7 +24,7 @@ export class CalendarComponent {
   refresh = new Subject<void>();
   CalendarView = CalendarView;
 
-  view: CalendarView = CalendarView.List;
+  view: CalendarView = CalendarView.Week;
 
   viewDate = new Date();
   locale: string = 'de';
