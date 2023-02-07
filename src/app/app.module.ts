@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import localeDe from '@angular/common/locales/de';
 import { registerLocaleData } from '@angular/common';
@@ -46,6 +47,7 @@ export function momentAdapterFactory() {
     BrowserModule,
     ReactiveFormsModule,
     FormsModule,
+    HttpClientModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: momentAdapterFactory
