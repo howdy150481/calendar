@@ -60,7 +60,7 @@ export default class CreateEvent {
   }
 
   setEditable(value: boolean): CreateEvent {
-    this.editable = value;
+    this.editable = Boolean(value);
     return this;
   }
 

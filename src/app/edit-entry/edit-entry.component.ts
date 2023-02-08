@@ -8,6 +8,7 @@ import { formatDateField, formatTimeField } from "../lib/cleave";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AlertDialogComponent} from "../helper/alert-dialog/alert-dialog.component";
 import CreateEvent from "../lib/CreateEvent";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-edit-entry',
@@ -36,6 +37,7 @@ export class EditEntryComponent {
 
   constructor(
     public editEntryDialogRef: MatDialogRef<EditEntryComponent>,
+    private http: HttpClient,
     public matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
@@ -73,11 +75,27 @@ export class EditEntryComponent {
   }
 
   save(): void {
-    if (this.form.valid) {
+    if (this.form.valid) {      
       const start = this.form.get('dateStart').value;
       const dateStart = moment(start, "DD.MM.YYYY").format("YYYY-MM-DD");
       const end = this.form.get('dateEnd').value
       const dateEnd = moment(end, "DD.MM.YYYY").format("YYYY-MM-DD");
+     
+
+      const saveEvent = {        
+        id: this.id,
+        title: this.form.get('title').value,
+        details: this.form.get('details').value,
+        color: this.form.get('color').value,
+        dateStart: dateStart,
+        timeStart: this.form.get('timeStart').value,
+        dateEnd: dateEnd,
+        timeEnd: this.form.get('timeEnd').value,
+        allDay: this.form.get('allDay').value
+      };      
+      this.http.post('http://localhost:3000', saveEvent).subscribe(result => {      
+        this.id = String(result);
+      });
 
       let createEvent = new CreateEvent();
       createEvent
@@ -113,6 +131,7 @@ export class EditEntryComponent {
 
     confirmDialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.http.delete('http://localhost:3000/' + this.id).subscribe(result => {});
         this.deleteEvent.emit(this.id);
         this.editEntryDialogRef.close();
       }

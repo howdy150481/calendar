@@ -43,17 +43,17 @@ export class CalendarComponent {
 
       for (const key in result) {
         createEvent
-            .setId(result[key].id)
-            .setTitle(result[key].title)
-            .setDateEnd(result[key].det)
-            .setDateStart(result[key].dateStart)
-            .setTimeStart(result[key].timeStart)
-            .setDateEnd(result[key].dateEnd)
-            .setTimeEnd(result[key].timeEnd)
-            .setColor(result[key].color)
-            .setAllDay(result[key].allDay)
-            .setEditable(result[key].editable);
-        holidays.push(createEvent.getEvent());
+          .setId(result[key].id)
+          .setTitle(result[key].title)
+          .setDetails(result[key].details)
+          .setDateStart(result[key].dateStart)
+          .setTimeStart(result[key].timeStart)
+          .setDateEnd(result[key].dateEnd)
+          .setTimeEnd(result[key].timeEnd)
+          .setColor(result[key].color)
+          .setAllDay(JSON.parse(result[key].allDay)) // TODO: Gibt es keinen Sauberen Typecast?
+          .setEditable(JSON.parse(result[key].editable));
+        holidays.push(createEvent.getEvent());        
       }
       this.events.push(...holidays);
       this.refresh.next();
