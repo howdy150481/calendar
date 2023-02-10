@@ -9,6 +9,7 @@ import HolidaysCalculator from "../lib/HolidaysCalculator";
 import {AlertDialogComponent} from "../helper/alert-dialog/alert-dialog.component";
 import {HttpClient} from "@angular/common/http";
 import CreateEvent from "../lib/CreateEvent";
+import moment from 'moment';
 
 @Component({
   selector: 'app-calendar',
@@ -130,5 +131,14 @@ export class CalendarComponent {
       }
     }
     this.refresh.next();
+
+    const moveEvent = {        
+      id: event.event.id,
+      dateStart: moment(event.newStart).format('YYYY-MM-DD'),
+      timeStart: moment(event.newStart).format('HH:mm'),
+      dateEnd: moment(event.newEnd).format('YYYY-MM-DD'),
+      timeEnd: moment(event.newEnd).format('HH:mm')
+    };      
+    this.http.post('http://localhost:3000/move', moveEvent).subscribe(result => {});
   }
 }
